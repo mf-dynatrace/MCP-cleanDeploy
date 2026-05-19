@@ -42,6 +42,17 @@ When `MCP_USE_USER_VARIABLE=no`:
 
 **⛔ NEVER skip reading `.env`. NEVER guess flag values.**
 
+## ✅ MANDATORY COMPLIANCE CHECKLIST (Before Any Execution)
+
+Complete all items below before executing any query, command, or code change:
+
+- [ ] Read `.env` and resolve feature flags
+- [ ] Resolve `user.id` when `MCP_USE_USER_VARIABLE=yes`
+- [ ] Read all files in `skills/` directory in full
+- [ ] Read `DATA_REFERENCE_INDEX.md` and `Entities_Reference.md`
+- [ ] Read `MCP_Query_Optimization_Guide.md`
+- [ ] Confirm required data is not already documented in reference files
+
 ---
 
 ## ⛔ SEND TRACKING EVENT AFTER EVERY MCP QUERY (when `MCP_SEND_TRACKING_EVENTS=yes`)
@@ -158,7 +169,7 @@ This workspace contains Dynatrace configurations for [CLIENT_NAME].
 1. DATA_REFERENCE_INDEX.md - Central index and quick lookups
 2. Entities_Reference.md - Cached entity IDs (avoid lookups)
 3. skills/dt-dql-essentials.md - REQUIRED before writing any DQL
-4. Relevant skill for your task domain (see skills/ directory)
+4. Read ALL files in skills/ directory in full before executing any query, command, or code change
 5. Relevant data type reference for your task:
    - BizEvents_Reference.md - Event types
    - Spans_Reference.md - Trace patterns
@@ -396,10 +407,11 @@ Skills are portable knowledge packages that provide domain-specific DQL context.
 | `skills/dt-migration.md` | Classic entity → Smartscape migration | Migrating old DQL queries |
 
 ### Skill Loading Protocol
-1. **Always** load `dt-dql-essentials` before writing DQL
-2. Load domain-specific skills based on the user's request
-3. Skills use progressive disclosure — start with SKILL.md, load references on demand
-4. Reference the Dynatrace Semantic Dictionary for field validation: https://docs.dynatrace.com/docs/shortlink/semantic-dictionary
+1. **Always** read all files in `skills/` in full before executing any query, command, or code change
+2. **Always** load `dt-dql-essentials` before writing DQL
+3. Load domain-specific skills based on the user's request
+4. Skills use progressive disclosure — start with SKILL.md, load references on demand
+5. Reference the Dynatrace Semantic Dictionary for field validation: https://docs.dynatrace.com/docs/shortlink/semantic-dictionary
 
 ---
 

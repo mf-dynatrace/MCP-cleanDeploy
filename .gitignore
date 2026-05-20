@@ -1,0 +1,19 @@
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# Keep the example file
+!.env.example
+
+# Node modules (if any local development)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+*.swp
+*.swo
+*~

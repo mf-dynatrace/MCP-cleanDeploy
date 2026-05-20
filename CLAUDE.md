@@ -54,8 +54,8 @@ Complete all items below before executing any query, command, or code change:
 - [ ] Read `.env` and resolve feature flags
 - [ ] Resolve `user.id` when `MCP_USE_USER_VARIABLE=yes`
 - [ ] Read all files in `skills/` directory in full
-- [ ] Read `DATA_REFERENCE_INDEX.md` and `Entities_Reference.md`
-- [ ] Read `MCP_Query_Optimization_Guide.md`
+- [ ] Read `reference/DATA_REFERENCE_INDEX.md` and `reference/Entities_Reference.md`
+- [ ] Read `reference/MCP_Query_Optimization_Guide.md`
 - [ ] Confirm required data is not already documented in reference files
 
 ---
@@ -165,21 +165,21 @@ At the END of every session, verify you have documented:
 
 ### Step 1: Read These Files FIRST (No Queries Yet!)
 ```
-1. DATA_REFERENCE_INDEX.md - Central index, quick lookups
-2. Entities_Reference.md - Cached entity IDs
+1. reference/DATA_REFERENCE_INDEX.md - Central index, quick lookups
+2. reference/Entities_Reference.md - Cached entity IDs
 3. skills/dt-dql-essentials.md - REQUIRED before writing any DQL
 4. Read ALL files in skills/ directory in full before executing any query, command, or code change
 5. [Relevant data type reference for your task]
-6. MCP_Query_Optimization_Guide.md - Cost rules
+6. reference/MCP_Query_Optimization_Guide.md - Cost rules
 ```
 
 ### Step 2: Check if Data Already Exists
 Before ANY MCP query, check reference files for:
-- Entity IDs → `Entities_Reference.md`
-- Event types → `BizEvents_Reference.md`
-- Span patterns → `Spans_Reference.md`
-- Error patterns → `Logs_Reference.md`
-- Metrics → `Metrics_Reference.md`
+- Entity IDs → `reference/Entities_Reference.md`
+- Event types → `reference/BizEvents_Reference.md`
+- Span patterns → `reference/Spans_Reference.md`
+- Error patterns → `reference/Logs_Reference.md`
+- Metrics → `reference/Metrics_Reference.md`
 
 ### Step 3: Query Only for NEW Information
 Only use MCP tools for data NOT already documented.
@@ -199,13 +199,13 @@ Only use MCP tools for data NOT already documented.
 
 | When You Discover | Update This File | Priority |
 |-------------------|------------------|----------|
-| New entity ID | `Entities_Reference.md` | ⛔ NOW |
-| New span pattern or field availability | `Spans_Reference.md` | ⛔ NOW |
-| New event type | `BizEvents_Reference.md` | ⛔ NOW |
-| New error pattern | `Logs_Reference.md` | ⛔ NOW |
-| New metric | `Metrics_Reference.md` | ⛔ NOW |
-| Query cost insight | `MCP_Query_Optimization_Guide.md` | ⛔ NOW |
-| Permission/scope error | `scope_increase.md` | ⛔ NOW |
+| New entity ID | `reference/Entities_Reference.md` | ⛔ NOW |
+| New span pattern or field availability | `reference/Spans_Reference.md` | ⛔ NOW |
+| New event type | `reference/BizEvents_Reference.md` | ⛔ NOW |
+| New error pattern | `reference/Logs_Reference.md` | ⛔ NOW |
+| New metric | `reference/Metrics_Reference.md` | ⛔ NOW |
+| Query cost insight | `reference/MCP_Query_Optimization_Guide.md` | ⛔ NOW |
+| Permission/scope error | `reference/scope_increase.md` | ⛔ NOW |
 
 ### What MUST Be Documented:
 - Entity IDs discovered via `find_entity_by_name`
@@ -220,7 +220,7 @@ Only use MCP tools for data NOT already documented.
 ✅ DO: Read .env feature flags at session start (ALWAYS)
 ✅ DO: Send a tracking event after EVERY MCP query (if MCP_SEND_TRACKING_EVENTS=yes)
 ✅ DO: Read reference files before querying
-✅ DO: Use cached entity IDs from Entities_Reference.md
+✅ DO: Use cached entity IDs from reference/Entities_Reference.md
 ✅ DO: Use timeseries for service metrics (FREE)
 ✅ DO: Filter BizEvents by event.type FIRST
 ✅ DO: Start with 24h timeframe, extend only if needed
@@ -231,7 +231,7 @@ Only use MCP tools for data NOT already documented.
 ✅ DO: Pre-filter user.events by characteristics.classifier BEFORE any other filter
 ✅ DO: Use dt.rum.application.entity (NOT dt.entity.application) on user.events
 ✅ DO: Use frontend.name or in(dt.rum.application.entities,...) on user.sessions
-✅ DO: Check Entities_Reference.md for correct RUM filter patterns
+✅ DO: Check reference/Entities_Reference.md for correct RUM filter patterns
 
 ❌ DON'T: Skip reading .env feature flags
 ❌ DON'T: Send tracking events when MCP_SEND_TRACKING_EVENTS=no
@@ -380,15 +380,15 @@ Prompt files in `.github/prompts/` work as VS Code slash commands:
 
 | File | Purpose |
 |------|---------|
-| `DATA_REFERENCE_INDEX.md` | **START HERE** - Central index |
-| `Entities_Reference.md` | Cached entity IDs |
-| `BizEvents_Reference.md` | Event types |
-| `Spans_Reference.md` | Span/trace patterns |
-| `Logs_Reference.md` | Log and error patterns |
-| `Metrics_Reference.md` | Free metric queries |
-| `MCP_Query_Optimization_Guide.md` | Full cost guide |
-| `mcp_query_tracking_schema.md` | MCP telemetry event schema |
-| `scope_increase.md` | Token scope gaps & required permission fixes |
+| `reference/DATA_REFERENCE_INDEX.md` | **START HERE** - Central index |
+| `reference/Entities_Reference.md` | Cached entity IDs |
+| `reference/BizEvents_Reference.md` | Event types |
+| `reference/Spans_Reference.md` | Span/trace patterns |
+| `reference/Logs_Reference.md` | Log and error patterns |
+| `reference/Metrics_Reference.md` | Free metric queries |
+| `reference/MCP_Query_Optimization_Guide.md` | Full cost guide |
+| `reference/mcp_query_tracking_schema.md` | MCP telemetry event schema |
+| `reference/scope_increase.md` | Token scope gaps & required permission fixes |
 | `AI_Prompt.md` | Task templates |
 | `skills/` | **Dynatrace AI Skills** (DQL essentials, observability, platform) |
 | `.github/prompts/` | **Reusable prompt templates** (slash commands) |
@@ -399,22 +399,22 @@ Prompt files in `.github/prompts/` work as VS Code slash commands:
 ## 🎯 Common Analysis Patterns
 
 ### Pattern 1: Service Performance Analysis
-1. Read `Entities_Reference.md` for service ID (or find_entity_by_name)
+1. Read `reference/Entities_Reference.md` for service ID (or find_entity_by_name)
 2. Use FREE metrics for request counts, response times, error rates
 3. Only dive into spans if metrics show anomaly
-4. Document findings in `Spans_Reference.md`
+4. Document findings in `reference/Spans_Reference.md`
 
 ### Pattern 2: Error Investigation  
-1. Check `Logs_Reference.md` for known error patterns
+1. Check `reference/Logs_Reference.md` for known error patterns
 2. Query logs with loglevel filter (10-15 GB for 24h)
 3. Identify top error services
-4. Document new patterns in `Logs_Reference.md`
+4. Document new patterns in `reference/Logs_Reference.md`
 
 ### Pattern 3: Business Event Analysis
-1. Check `BizEvents_Reference.md` for known event types
+1. Check `reference/BizEvents_Reference.md` for known event types
 2. Start with event.type summary query
 3. Filter by specific event.type + dimensions
-4. Document new event types in `BizEvents_Reference.md`
+4. Document new event types in `reference/BizEvents_Reference.md`
 
 ### Pattern 4: New Dashboard Creation
 1. Read ALL reference files for available data
@@ -434,7 +434,7 @@ Prompt files in `.github/prompts/` work as VS Code slash commands:
 2. **Pre-filter user.events** by `characteristics.classifier` FIRST (saves 90%+ of scan cost)
 3. **Use page.url.path** exact match, NEVER page.url.domain string filter (174 GB vs 4 GB)
 4. **Correct entity filters:** `dt.rum.application.entity` on user.events, `frontend.name` on user.sessions
-5. **See Entities_Reference.md** for full filter cheat sheet with verified correct/wrong patterns
+5. **See reference/Entities_Reference.md** for full filter cheat sheet with verified correct/wrong patterns
 
 ---
 
@@ -514,7 +514,7 @@ FROM useraction WHERE useraction.application="{App Display Name}" LIMIT 20
 ## ⚠️ Permission Error Handling
 When a DQL query returns `NOT_AUTHORIZED_FOR_TABLE` or similar permission errors:
 1. **Do NOT retry** — the scope is missing from the token
-2. **Log it immediately** in `scope_increase.md` with the exact error, failed query, and required scope
+2. **Log it immediately** in `reference/scope_increase.md` with the exact error, failed query, and required scope
 3. **Work around it** using alternative data sources if possible
 4. **Inform the user** that a scope increase is needed
 

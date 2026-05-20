@@ -2,7 +2,7 @@
 
 > **Environment:** [TENANT_ID]  
 > **Client:** [CLIENT_NAME]  
-> **IMPORTANT:** Always read `.env` feature flags and `MCP_Query_Optimization_Guide.md` before making any Dynatrace MCP queries
+> **IMPORTANT:** Always read `.env` feature flags and `reference/MCP_Query_Optimization_Guide.md` before making any Dynatrace MCP queries
 
 ---
 
@@ -39,12 +39,12 @@ Before using ANY Dynatrace MCP tools, follow these rules to minimize Grail budge
 ### Known Entity IDs (Cache These)
 | Entity Name | Entity ID | Type |
 |-------------|-----------|------|
-| *(Populate from Entities_Reference.md)* | | |
+| *(Populate from reference/Entities_Reference.md)* | | |
 
 ### High-Volume Events (Add Extra Filters)
 | Event Type | Volume | Required Filters |
 |------------|--------|------------------|
-| *(Populate from BizEvents_Reference.md)* | | |
+| *(Populate from reference/BizEvents_Reference.md)* | | |
 
 ---
 
@@ -79,9 +79,9 @@ Use appropriate thresholds for traffic light indicators.
 
 ### Template 5: Business Analytics Dashboard
 Create a business-aligned analytics dashboard for [USE_CASE].
-**IMPORTANT:** Read BizEvents_Reference.md and Entities_Reference.md FIRST before any queries.
+**IMPORTANT:** Read reference/BizEvents_Reference.md and reference/Entities_Reference.md FIRST before any queries.
 Research available BizEvents data:
-1. Use cached entity IDs from Entities_Reference.md (avoid find_entity_by_name)
+1. Use cached entity IDs from reference/Entities_Reference.md (avoid find_entity_by_name)
 2. Query BizEvents with `event.type` filter first
 3. Start with 24h timeframe for exploration
 Include: key business KPIs, conversion funnels, revenue metrics.
@@ -89,7 +89,7 @@ Add trend analysis and comparisons.
 
 ### Template 6: Brand/Product Comparison Dashboard
 Create a multi-brand or multi-product comparison dashboard.
-**IMPORTANT:** Read BizEvents_Reference.md and Entities_Reference.md FIRST before any queries.
+**IMPORTANT:** Read reference/BizEvents_Reference.md and reference/Entities_Reference.md FIRST before any queries.
 Compare: revenue, orders, conversion rates, error rates across brands/products.
 Use consistent color coding and visualizations.
 Highlight top and bottom performers.
@@ -100,28 +100,28 @@ Include sparklines for trend visibility.
 ## Reference Documents & Reading Order
 
 ### ALWAYS Read First (Before ANY Queries)
-1. **DATA_REFERENCE_INDEX.md** - Central index and quick lookups
-2. **Entities_Reference.md** - Cached entity IDs (avoid repeat lookups)
-3. **MCP_Query_Optimization_Guide.md** - Cost rules and best practices
+1. **reference/DATA_REFERENCE_INDEX.md** - Central index and quick lookups
+2. **reference/Entities_Reference.md** - Cached entity IDs (avoid repeat lookups)
+3. **reference/MCP_Query_Optimization_Guide.md** - Cost rules and best practices
 
 ### Read Based on Task Type
-- **BizEvents analysis:** BizEvents_Reference.md
-- **Service performance:** Spans_Reference.md + Metrics_Reference.md
-- **Error investigation:** Logs_Reference.md
-- **Infrastructure:** Entities_Reference.md
+- **BizEvents analysis:** reference/BizEvents_Reference.md
+- **Service performance:** reference/Spans_Reference.md + reference/Metrics_Reference.md
+- **Error investigation:** reference/Logs_Reference.md
+- **Infrastructure:** reference/Entities_Reference.md
 
 ### Use for Examples
 - **example/ directory** - Gen 3 Dashboard JSON and JavaScript syntax
 
 ---
-- `MCP_Query_Optimization_Guide.md` - Full query optimization guide with examples
-- `BizEvents_Reference.md` - All available BizEvent types and fields
-- `Spans_Reference.md` - Span patterns and service baselines
-- `Logs_Reference.md` - Log patterns and error signatures
-- `Metrics_Reference.md` - Available metrics (FREE queries)
-- `Entities_Reference.md` - Cached entity IDs
-- `scope_increase.md` - Token scope gaps & required permission fixes
-- `mcp_query_tracking_schema.md` - MCP telemetry event schema
+- `reference/MCP_Query_Optimization_Guide.md` - Full query optimization guide with examples
+- `reference/BizEvents_Reference.md` - All available BizEvent types and fields
+- `reference/Spans_Reference.md` - Span patterns and service baselines
+- `reference/Logs_Reference.md` - Log patterns and error signatures
+- `reference/Metrics_Reference.md` - Available metrics (FREE queries)
+- `reference/Entities_Reference.md` - Cached entity IDs
+- `reference/scope_increase.md` - Token scope gaps & required permission fixes
+- `reference/mcp_query_tracking_schema.md` - MCP telemetry event schema
 - `example/` directory - Gen 3 Dashboard JSON and JavaScript syntax examples (if available)
 
 ---

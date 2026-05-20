@@ -116,11 +116,11 @@ Start your first session by running these FREE queries:
 ### Step 4: Populate Reference Files
 
 As you discover data, update the reference files:
-- Add entities to `Entities_Reference.md`
-- Add event types to `BizEvents_Reference.md`
-- Add span patterns to `Spans_Reference.md`
-- Add error patterns to `Logs_Reference.md`
-- Add metrics to `Metrics_Reference.md`
+- Add entities to `reference/Entities_Reference.md`
+- Add event types to `reference/BizEvents_Reference.md`
+- Add span patterns to `reference/Spans_Reference.md`
+- Add error patterns to `reference/Logs_Reference.md`
+- Add metrics to `reference/Metrics_Reference.md`
 
 ---
 
@@ -135,14 +135,16 @@ cleanDeploy/
 ├── .vscode/
 │   └── mcp.json                   # MCP server configuration
 ├── CLAUDE.md                      # Claude/Anthropic AI instructions (auto-loaded)
-├── DATA_REFERENCE_INDEX.md        # Central index - START HERE
-├── MCP_Query_Optimization_Guide.md # Query cost optimization
-├── mcp_query_tracking_schema.md   # MCP telemetry event schema
-├── Entities_Reference.md          # Cached entity IDs
-├── BizEvents_Reference.md         # Business event types
-├── Spans_Reference.md             # Trace/span patterns
-├── Logs_Reference.md              # Log and error patterns
-├── Metrics_Reference.md           # Available metrics (FREE)
+├── reference/
+│   ├── DATA_REFERENCE_INDEX.md    # Central index - START HERE
+│   ├── MCP_Query_Optimization_Guide.md # Query cost optimization
+│   ├── mcp_query_tracking_schema.md   # MCP telemetry event schema
+│   ├── Entities_Reference.md      # Cached entity IDs
+│   ├── BizEvents_Reference.md     # Business event types
+│   ├── Spans_Reference.md         # Trace/span patterns
+│   ├── Logs_Reference.md          # Log and error patterns
+│   ├── Metrics_Reference.md       # Available metrics (FREE)
+│   └── scope_increase.md          # Token scope gaps & fixes
 ├── AI_Prompt.md                   # Task templates
 ├── example/
 │   ├── example_dashboard.json     # Sample dashboard template
@@ -188,7 +190,7 @@ fetch events
 | filter event.type == "CUSTOM_INFO" and event.name == "MCP Query Execution"
 ```
 
-See [mcp_query_tracking_schema.md](mcp_query_tracking_schema.md) for full event schema.
+See [reference/mcp_query_tracking_schema.md](reference/mcp_query_tracking_schema.md) for full event schema.
 
 ---
 
@@ -238,8 +240,8 @@ See [mcp_query_tracking_schema.md](mcp_query_tracking_schema.md) for full event 
 - [ ] Copy `.github/copilot-instructions.md` (for Copilot integration)
 - [ ] Run initial entity discovery
 - [ ] Run BizEvents summary query
-- [ ] Populate `Entities_Reference.md` with discovered entities
-- [ ] Populate `BizEvents_Reference.md` with event types
+- [ ] Populate `reference/Entities_Reference.md` with discovered entities
+- [ ] Populate `reference/BizEvents_Reference.md` with event types
 - [ ] Test a sample dashboard query
 - [ ] (Optional) Copy example dashboards to `example/` folder
 

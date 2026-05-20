@@ -20,9 +20,9 @@
 | [MCP_Query_Optimization_Guide.md](MCP_Query_Optimization_Guide.md) | Optimization | Query cost rules, best practices |
 | [mcp_query_tracking_schema.md](mcp_query_tracking_schema.md) | Telemetry | MCP query tracking event schema |
 | [scope_increase.md](scope_increase.md) | Permissions | Token scope gaps & required fixes |
-| [AI_Prompt.md](AI_Prompt.md) | Templates | Task templates and prompts |
-| [example/MCP_Query_Usage_Dashboard.json](example/MCP_Query_Usage_Dashboard.json) | Dashboard | MCP usage monitoring dashboard |
-| [example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json](example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json) | Dashboard | [TICKET_PROVIDER] iframe ticket checkout funnel |
+| [AI_Prompt.md](../AI_Prompt.md) | Templates | Task templates and prompts |
+| [example/MCP_Query_Usage_Dashboard.json](../example/MCP_Query_Usage_Dashboard.json) | Dashboard | MCP usage monitoring dashboard |
+| [example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json](../example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json) | Dashboard | [TICKET_PROVIDER] iframe ticket checkout funnel |
 
 ### 🧠 Dynatrace AI Skills (from [dynatrace-for-ai](https://github.com/Dynatrace/dynatrace-for-ai))
 

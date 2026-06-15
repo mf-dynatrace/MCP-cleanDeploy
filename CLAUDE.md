@@ -5,6 +5,43 @@
 
 ---
 
+## 🔌 MCP Server Connection (How Claude Connects)
+
+> **If the Dynatrace MCP tools are missing in a session, this is almost always why.**
+
+Claude Code reads MCP server definitions from **`.mcp.json` at the workspace root** — **NOT** from the `mcpServers` key in `.claude/settings.json`. (That key is Claude *Desktop* format and is silently ignored by Claude Code / the VS Code extension.)
+
+**Required files (already included in this workspace):**
+
+| File | Used By | Purpose |
+|------|---------|---------|
+| `.mcp.json` | **Claude Code** (CLI / desktop / VS Code extension) | Server definition Claude Code actually reads |
+| `.claude/settings.json` | Claude Code | `enableAllProjectMcpServers: true` — auto-approves the server (skips the per-project trust prompt) |
+| `.vscode/mcp.json` | VS Code + GitHub Copilot | Server definition for Copilot (uses native `envFile`) |
+| `.env` | both | Credentials, sourced by the server at launch |
+
+**`.mcp.json` contents:**
+```json
+{
+  "mcpServers": {
+    "dynatrace-mcp-server": {
+      "command": "bash",
+      "args": ["-c", "set -a && source .env && set +a && exec npx -y @dynatrace-oss/dynatrace-mcp-server@latest"]
+    }
+  }
+}
+```
+
+**If the Dynatrace MCP tools are missing in a session:**
+1. Confirm `.mcp.json` exists at the workspace root (not just `.claude/settings.json`).
+2. In the VS Code extension, run **Developer: Reload Window** (`Cmd/Ctrl+Shift+P`) — `.mcp.json` is only read at session start. In the CLI, restart `claude` from the workspace root.
+3. Approve `dynatrace-mcp-server` if prompted (or rely on `enableAllProjectMcpServers: true`).
+4. Verify with `/mcp`, or by asking *"What environment am I connected to?"* (calls `get_environment_info`).
+
+> **Windows:** `command: "bash"` requires Git Bash on PATH (bundled with Git for Windows). If unavailable, pre-export the `.env` variables into your shell before launching `claude` (see INSTALL.md).
+
+---
+
 ## ⚡ SESSION CONSTANTS
 
 | Constant | Value | Source |

@@ -1,18 +1,33 @@
 # Dynatrace MCP Connection - Clean Deploy Template
 
-> **Version:** 2.0  
+> **Version:** 2.2  
 > **Created:** 30 January 2026  
-> **Updated:** 6 March 2026  
+> **Updated:** 15 June 2026  
 > **Purpose:** Reusable template for Dynatrace MCP connections with cost optimization and self-learning capabilities
+>
+> **What's new in 2.2:** Claude Code now connects via **`.mcp.json`** (workspace root) — the file Claude Code actually reads. Previous versions placed the server in `.claude/settings.json`, which Claude Code silently ignores, causing "MCP not connecting". VS Code + Copilot is unchanged (`.vscode/mcp.json`).
 
 ---
 
-## � MCP Server Setup
+## 🔌 MCP Server Setup
+
+### Supported AI Clients
+
+This workspace supports two AI clients — both use the same `.env` file:
+
+| Client | Config File | Loads `.env` Via |
+|--------|-------------|-----------------|
+| **VS Code + GitHub Copilot** | `.vscode/mcp.json` | VS Code `envFile` (native) |
+| **Claude Code** (CLI / desktop / IDE) | `.mcp.json` | `bash -c "source .env && ..."` |
+
+> ⚠️ **Claude Code reads `.mcp.json` at the workspace root — not `.claude/settings.json`.** A `mcpServers` block in `.claude/settings.json` is silently ignored by Claude Code. `.claude/settings.json` is used only for `enableAllProjectMcpServers: true` (auto-approves the project server so users skip the trust prompt).
 
 ### Prerequisites
-- Node.js 18+ installed
-- VS Code with GitHub Copilot
-- Dynatrace Platform access with API token
+- **Node.js 18+** installed
+- Choose your AI client:
+  - **VS Code + GitHub Copilot** — Chat extension enabled
+  - **Claude Code** — `npm install -g @anthropic-ai/claude-code`
+- **Dynatrace Platform Token** with required scopes
 
 ### Step 1: Create Your .env File
 
@@ -61,9 +76,26 @@ Create a Platform Token in Dynatrace with these scopes:
 
 ### Step 3: Verify MCP Connection
 
-1. Open VS Code in this workspace
-2. The MCP server starts automatically (see `.vscode/mcp.json`)
-3. Test with Copilot: "What Dynatrace environment am I connected to?"
+**VS Code + GitHub Copilot:**
+1. Open VS Code in this workspace (`code .`)
+2. The MCP server starts automatically via `.vscode/mcp.json`
+3. Ask in Copilot Chat: *"What Dynatrace environment am I connected to?"*
+
+**Claude Code (macOS/Linux):**
+1. Run `claude` from the workspace root (the folder containing `.env` and `.mcp.json`)
+2. The MCP server starts automatically via `.mcp.json`
+3. Ask: *"What Dynatrace environment am I connected to?"*
+
+> **Using the VS Code extension?** After cloning/opening, run **Developer: Reload Window** (`Cmd/Ctrl+Shift+P`) so the extension reads `.mcp.json` (only loaded at session start), then check `/mcp` to confirm `dynatrace-mcp-server` is connected.
+
+**Claude Code (Windows):**
+```powershell
+# Export .env variables to your session first
+Get-Content .env | Where-Object { $_ -notmatch '^#' -and $_ -ne '' } | ForEach-Object {
+    $k, $v = $_ -split '=', 2; [System.Environment]::SetEnvironmentVariable($k, $v)
+}
+claude
+```
 
 ---
 
@@ -132,9 +164,12 @@ cleanDeploy/
 ├── .gitignore                     # Excludes .env from version control
 ├── .github/
 │   └── copilot-instructions.md    # GitHub Copilot instructions (auto-loaded)
+├── .mcp.json                      # MCP server config — Claude Code (the file Claude Code reads)
 ├── .vscode/
-│   └── mcp.json                   # MCP server configuration
-├── CLAUDE.md                      # Claude/Anthropic AI instructions (auto-loaded)
+│   └── mcp.json                   # MCP server config — VS Code + GitHub Copilot
+├── .claude/
+│   └── settings.json              # Claude Code: enableAllProjectMcpServers (auto-approve)
+├── CLAUDE.md                      # Claude Code AI instructions (auto-loaded)
 ├── reference/
 │   ├── DATA_REFERENCE_INDEX.md    # Central index - START HERE
 │   ├── MCP_Query_Optimization_Guide.md # Query cost optimization
@@ -235,9 +270,10 @@ See [reference/mcp_query_tracking_schema.md](reference/mcp_query_tracking_schema
 - [ ] Configure `DT_ENVIRONMENT` with your tenant URL
 - [ ] Configure `DT_PLATFORM_TOKEN` with required scopes
 - [ ] Set feature flags (`MCP_GRAIL_ONLY`, `MCP_USE_USER_VARIABLE`, `MCP_SEND_TRACKING_EVENTS`)
-- [ ] Verify MCP connection works ("What environment am I connected to?")
+- [ ] Verify MCP connection (VS Code Copilot **or** Claude Code — "What environment am I connected to?")
 - [ ] Replace all `[PLACEHOLDER]` values in reference files
-- [ ] Copy `.github/copilot-instructions.md` (for Copilot integration)
+- [ ] Keep `.github/copilot-instructions.md` (for Copilot)
+- [ ] Keep `.mcp.json` + `.claude/settings.json` (for Claude Code)
 - [ ] Run initial entity discovery
 - [ ] Run BizEvents summary query
 - [ ] Populate `reference/Entities_Reference.md` with discovered entities

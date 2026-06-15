@@ -4,10 +4,26 @@
 
 ---
 
+## Supported AI Clients
+
+This workspace works with **two AI clients** — both read credentials from the same `.env` file:
+
+| Client | Config File | How It Connects |
+|--------|-------------|-----------------|
+| **VS Code + GitHub Copilot** | `.vscode/mcp.json` | Uses VS Code's native `envFile` support |
+| **Claude Code** (CLI / desktop / IDE) | `.mcp.json` | Uses a bash wrapper to source `.env` |
+
+> **Both configs are included.** Configure `.env` once — it works for both clients.
+>
+> ⚠️ **Claude Code reads `.mcp.json` (workspace root), NOT `.claude/settings.json`.** The `mcpServers` key only works in `.mcp.json` for Claude Code. `.claude/settings.json` is used only for `enableAllProjectMcpServers` (auto-approval). If you've seen "MCP not connecting" in Claude Code before, a missing `.mcp.json` is the usual cause.
+
+---
+
 ## Prerequisites
 
 - **Node.js 18+** — [nodejs.org](https://nodejs.org)
-- **VS Code** with GitHub Copilot (Chat enabled)
+- **VS Code** with GitHub Copilot (Chat enabled) — *for Copilot users*
+- **Claude Code** installed — *for Claude users* (`npm install -g @anthropic-ai/claude-code`)
 - **Dynatrace Platform Token** with required scopes
 
 > Works on **macOS**, **Windows**, and **Linux**. Platform-specific commands are noted below.
@@ -72,7 +88,7 @@ Create a **Platform Token** in Dynatrace with:
 | `storage:user.sessions:read` | RUM sessions (optional) |
 | `storage:user.events:read` | RUM events (optional) |
 
-## 4. Open in VS Code
+## 4a. Open in VS Code (GitHub Copilot)
 
 **macOS / Linux / Windows:**
 ```bash
@@ -85,13 +101,40 @@ code .
 The MCP server auto-starts via `.vscode/mcp.json` — no install step needed.  
 It runs: `npx -y @dynatrace-oss/dynatrace-mcp-server@latest`
 
-## 5. Verify Connection
-
-In Copilot Chat, ask:
-
+**Verify in Copilot Chat:**
 > "What Dynatrace environment am I connected to?"
 
-If it responds with your tenant ID, you're connected.
+---
+
+## 4b. Open with Claude Code
+
+Claude Code uses **`.mcp.json`** (at the workspace root) to connect to the same MCP server. It reads credentials directly from `.env` via a bash wrapper. `.claude/settings.json` ships with `enableAllProjectMcpServers: true` so the server is trusted automatically (no approval prompt).
+
+> **Why `.mcp.json` and not `.claude/settings.json`?** Claude Code (CLI, desktop, and the VS Code extension) reads MCP server definitions **only** from `.mcp.json` or `~/.claude.json`. A `mcpServers` block placed in `.claude/settings.json` is silently ignored — this is the #1 cause of "MCP not connecting" in Claude Code.
+
+**macOS / Linux — open with Claude Code:**
+```bash
+claude
+```
+
+> Run this from the workspace root (the folder containing `.env` and `.mcp.json`).  
+> Claude Code loads the MCP server automatically at startup.
+
+**VS Code extension:** After cloning, run **Developer: Reload Window** (`Cmd/Ctrl+Shift+P`) so the extension picks up `.mcp.json` — it is only read at session start. Then check `/mcp` to confirm `dynatrace-mcp-server` is connected.
+
+**Windows — export variables first, then run:**
+```powershell
+# PowerShell: export env vars from .env before starting Claude Code
+Get-Content .env | Where-Object { $_ -notmatch '^#' -and $_ -ne '' } | ForEach-Object {
+    $k, $v = $_ -split '=', 2; [System.Environment]::SetEnvironmentVariable($k, $v)
+}
+claude
+```
+
+> **Why the difference?** VS Code supports `envFile` natively in `mcp.json`. Claude Code on macOS/Linux uses `bash -c "source .env && ..."` to achieve the same result. On Windows, pre-export the variables to your session before running `claude`.
+
+**Verify in Claude:**
+> "What Dynatrace environment am I connected to?"
 
 ---
 
@@ -126,20 +169,23 @@ All default to `yes`. Set to `no` in `.env` to disable:
 ## File Structure (Key Files)
 
 ```
-.env                          ← Your credentials (git-ignored)
-.vscode/mcp.json              ← MCP server config (auto-starts)
-.github/copilot-instructions.md ← Copilot behaviour rules
-CLAUDE.md                     ← Claude/Anthropic instructions
-reference/                    ← Self-updating knowledge base
-skills/                       ← DQL domain knowledge (12 files)
-example/                      ← Sample dashboards & workflows
+.env                            ← Your credentials (git-ignored)
+.mcp.json                       ← MCP server config for Claude Code (the file Claude Code reads)
+.vscode/mcp.json                ← MCP server config for VS Code + Copilot
+.claude/settings.json           ← Claude Code: enableAllProjectMcpServers (auto-approve)
+.github/copilot-instructions.md ← GitHub Copilot behaviour rules
+CLAUDE.md                       ← Claude Code behaviour rules
+reference/                      ← Self-updating knowledge base
+skills/                         ← DQL domain knowledge (12 files)
+example/                        ← Sample dashboards & workflows
 ```
 
 ---
 
 ## First Session Checklist
 
-- [ ] `.env` configured and connection verified
+- [ ] `.env` configured
+- [ ] Connection verified (`claude` or VS Code — "What environment am I connected to?")
 - [ ] Placeholders replaced in `CLAUDE.md` and `copilot-instructions.md`
 - [ ] Run `find_entity_by_name` to discover key services (FREE)
 - [ ] Update `reference/Entities_Reference.md` with discovered IDs
@@ -152,8 +198,11 @@ example/                      ← Sample dashboards & workflows
 
 | Problem | Fix |
 |---------|-----|
-| MCP not connecting | Check `DT_ENVIRONMENT` URL format (must be `*.apps.dynatrace.com`) |
+| MCP not connecting (VS Code Copilot) | Check `DT_ENVIRONMENT` URL format (must be `*.apps.dynatrace.com`); reload the window |
+| MCP not connecting (Claude Code) | Confirm **`.mcp.json` exists at the workspace root** — Claude Code ignores `mcpServers` in `.claude/settings.json`. Run `claude` from the folder containing `.env` and `.mcp.json`, or **Developer: Reload Window** in the VS Code extension. Verify with `/mcp`. |
+| MCP not connecting (Claude Code, Windows) | `bash` must be on PATH (install Git for Windows) — or pre-export `.env` vars (see step 4b) before running `claude` |
 | Auth errors | Verify token scopes match table above |
 | "Not authorized for table" | Add missing `storage:*:read` scope to token |
 | Copilot ignoring instructions | Ensure `.github/copilot-instructions.md` exists at workspace root |
+| Claude ignoring instructions | Ensure `CLAUDE.md` exists at workspace root |
 | High query costs | Read `reference/MCP_Query_Optimization_Guide.md` |

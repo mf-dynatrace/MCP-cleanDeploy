@@ -333,6 +333,25 @@ When using Dynatrace MCP tools, you MUST follow these rules to minimize Grail bu
 5. Service performance (from spans/metrics)
 6. Log analysis (errors, warnings)
 
+---
+
+## 📊 Report Output Standards
+
+**MANDATORY:** All generated reports (FinOps, analysis, investigation summaries) MUST be saved to the `/report` directory in the workspace.
+
+**Filename conventions:**
+- FinOps reports: `FinOps_K8s_Report_YYYY-MM-DD.md` or `FinOps_K8s_Report_[ClusterName]_YYYY-MM-DD.md`
+- Investigation reports: `Investigation_[Topic]_YYYY-MM-DD.md`
+- Analysis reports: `Analysis_[Subject]_YYYY-MM-DD.md`
+
+**Report structure:**
+- Use Markdown format
+- Include generation date and data timeframe
+- Reference relevant DQL queries used
+- Link to supporting dashboards or notebooks (if created)
+- Include executive summary at the top
+- Document methodology and data sources
+
 ## 📖 Dynatrace Semantic Dictionary
 > Reference for all data objects, fields, and relationships:
 > **https://docs.dynatrace.com/docs/shortlink/semantic-dictionary**
@@ -403,6 +422,7 @@ Skills are portable knowledge packages that provide domain-specific DQL context.
 | `skills/dt-obs-hosts.md` | Host/process metrics, infrastructure | CPU, memory, disk, network monitoring |
 | `skills/dt-obs-kubernetes.md` | K8s clusters, pods, nodes, workloads | Kubernetes troubleshooting |
 | `skills/dt-obs-aws.md` | AWS resources, cost, security | AWS infrastructure analysis |
+| `skills/dt-finops-kubernetes.md` | K8s FinOps analysis, cost optimization | FinOps reports, cost allocation, rightsizing |
 | `skills/dt-app-dashboards.md` | Dashboard creation/modification | Building dashboards |
 | `skills/dt-app-notebooks.md` | Notebook creation/modification | Building notebooks |
 | `skills/dt-migration.md` | Classic entity → Smartscape migration | Migrating old DQL queries |

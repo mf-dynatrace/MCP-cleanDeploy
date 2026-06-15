@@ -351,6 +351,7 @@ Skills are portable knowledge packages providing domain-specific DQL context. **
 | `skills/dt-obs-hosts.md` | Host/process metrics, infrastructure | CPU, memory, disk |
 | `skills/dt-obs-kubernetes.md` | K8s clusters, pods, nodes, workloads | Kubernetes |
 | `skills/dt-obs-aws.md` | AWS resources, cost, security | AWS infrastructure |
+| `skills/dt-finops-kubernetes.md` | K8s FinOps analysis, cost optimization | FinOps reports, cost allocation, rightsizing |
 | `skills/dt-app-dashboards.md` | Dashboard creation/modification | Building dashboards |
 | `skills/dt-app-notebooks.md` | Notebook creation/modification | Building notebooks |
 | `skills/dt-migration.md` | Classic entity → Smartscape migration | Migrating old DQL |
@@ -395,6 +396,25 @@ Prompt files in `.github/prompts/` work as VS Code slash commands:
 | `skills/` | **Dynatrace AI Skills** (DQL essentials, observability, platform) |
 | `.github/prompts/` | **Reusable prompt templates** (slash commands) |
 | `example/MCP_Query_Usage_Dashboard.json` | MCP usage tracking dashboard |
+
+---
+
+## 📊 Report Output Standards
+
+**MANDATORY:** All generated reports (FinOps, analysis, investigation summaries) MUST be saved to the `/report` directory in the workspace.
+
+**Filename conventions:**
+- FinOps reports: `FinOps_K8s_Report_YYYY-MM-DD.md` or `FinOps_K8s_Report_[ClusterName]_YYYY-MM-DD.md`
+- Investigation reports: `Investigation_[Topic]_YYYY-MM-DD.md`
+- Analysis reports: `Analysis_[Subject]_YYYY-MM-DD.md`
+
+**Report structure:**
+- Use Markdown format
+- Include generation date and data timeframe
+- Reference relevant DQL queries used
+- Link to supporting dashboards or notebooks (if created)
+- Include executive summary at the top
+- Document methodology and data sources
 
 ---
 

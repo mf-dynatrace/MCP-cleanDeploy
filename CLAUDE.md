@@ -229,8 +229,8 @@ Only use MCP tools for data NOT already documented.
 ✅ DO: Only use Gen 3 Grail DQL queries (if MCP_GRAIL_ONLY=yes)
 ✅ DO: Use user.sessions (not user.events) for session-level counts (<0.3 GB)
 ✅ DO: Pre-filter user.events by characteristics.classifier BEFORE any other filter
-✅ DO: Use dt.rum.application.entity (NOT dt.entity.application) on user.events
-✅ DO: Use frontend.name or in(dt.rum.application.entities,...) on user.sessions
+✅ DO: Use dt.rum.application.entity (PRIMARY, canonical) or frontend.name (ALTERNATIVE) on user.events
+✅ DO: Use in(dt.rum.application.entities,...) (PRIMARY) or frontend.name (ALTERNATIVE) on user.sessions
 ✅ DO: Check reference/Entities_Reference.md for correct RUM filter patterns
 
 ❌ DON'T: Skip reading .env feature flags
@@ -319,10 +319,12 @@ from:now()-7d, filter:{dt.entity.service == "SERVICE-XXXXXXXXXXXX"}
 **❌ INVALID (DQL error):** `user_action`, `user.actions`, `events`
 
 **Application filter cheat sheet:**
-| Table | ✅ Correct | ❌ Wrong (returns 0) |
-|-------|-----------|--------------------|
-| `user.sessions` | `frontend.name == "[APP_NAME]"` | `dt.entity.application` |
-| `user.events` | `dt.rum.application.entity == "APPLICATION-xxx"` | `dt.entity.application` |
+| Table | ✅ PRIMARY (canonical) | ✅ ALTERNATIVE (name-based) | ❌ Wrong (returns 0) |
+|-------|---------------------------|------------------------------|---------------------|
+| `user.sessions` | `in(dt.rum.application.entities, "APPLICATION-xxx")` | `frontend.name == "[APP_NAME]"` | `dt.entity.application` |
+| `user.events` | `dt.rum.application.entity == "APPLICATION-xxx"` | `frontend.name == "[APP_NAME]"` | `dt.entity.application` |
+
+**Prefer entity ID filters** (`dt.rum.application.entity`) **for automation/reusable queries; use name filters** (`frontend.name`) **for ad-hoc exploration.**
 
 **Custom action detection (GTM tags):**
 ```dql
@@ -433,7 +435,7 @@ Prompt files in `.github/prompts/` work as VS Code slash commands:
 1. **Start with user.sessions** (VERY CHEAP: <0.3 GB) for session counts, bounce rates, device mix
 2. **Pre-filter user.events** by `characteristics.classifier` FIRST (saves 90%+ of scan cost)
 3. **Use page.url.path** exact match, NEVER page.url.domain string filter (174 GB vs 4 GB)
-4. **Correct entity filters:** `dt.rum.application.entity` on user.events, `frontend.name` on user.sessions
+4. **Correct entity filters:** Prefer `dt.rum.application.entity` (PRIMARY) on user.events, `in(dt.rum.application.entities,...)` (PRIMARY) on user.sessions; `frontend.name` acceptable as ALTERNATIVE for human-readable queries
 5. **See reference/Entities_Reference.md** for full filter cheat sheet with verified correct/wrong patterns
 
 ---

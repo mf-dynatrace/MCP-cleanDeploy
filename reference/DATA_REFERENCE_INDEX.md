@@ -22,7 +22,6 @@
 | [scope_increase.md](scope_increase.md) | Permissions | Token scope gaps & required fixes |
 | [AI_Prompt.md](../AI_Prompt.md) | Templates | Task templates and prompts |
 | [example/MCP_Query_Usage_Dashboard.json](../example/MCP_Query_Usage_Dashboard.json) | Dashboard | MCP usage monitoring dashboard |
-| [example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json](../example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json) | Dashboard | [TICKET_PROVIDER] iframe ticket checkout funnel |
 
 ### 🧠 Dynatrace AI Skills (from [dynatrace-for-ai](https://github.com/Dynatrace/dynatrace-for-ai))
 
@@ -87,9 +86,11 @@
 **Note:** `user.events` provides event-level detail (requests, errors, navigations) while `user.sessions` provides aggregated session metrics.
 
 **⚠️ CRITICAL — Application filter on user.events (verified 2026-03-13):**
-- ✅ `dt.rum.application.entity == "APPLICATION-XXXXXXXXXXXX"` — works correctly
-- ✅ `frontend.name == "[APP_NAME]"` — also works
-- ❌ `dt.entity.application` — NULL on this table, DO NOT USE
+- ✅ **PRIMARY (recommended):** `dt.rum.application.entity == "APPLICATION-XXXXXXXXXXXX"` — canonical entity ID-based filter, most precise and unambiguous
+- ✅ **ALTERNATIVE:** `frontend.name == "[APP_NAME]"` — human-readable name filter, useful for ad-hoc queries and dashboard variables
+- ❌ **WRONG:** `dt.entity.application` — NULL on this table, DO NOT USE
+
+**When to use which:** Use entity ID filter for automation/reusable queries; use name filter for human-readable exploration or when entity ID is not yet known.
 
 **⚠️ CRITICAL — URL filtering costs (verified 2026-03-13):**
 - Filtering by `page.url.domain` or `view.url.domain` (string contains) costs **~174 GB per 3d** — VERY EXPENSIVE
@@ -103,6 +104,7 @@
 - There is **NO** `event.type` field on user.events (it's always null) — use `characteristics.classifier` to filter event kinds
 - There is **NO** `action.name` field — user action names are in `name` field (often null for auto-detected actions)
 - `characteristics.classifier` values: `request`, `user_interaction`, `other`, `error`, `navigation`, `visibility_change`, `view_summary`, `page_summary`, `user_action`, `invalid`
+- **FILTERING PATTERN:** Use `characteristics.classifier` as PRIMARY filter (most cost-efficient). Use `characteristics.has_*` boolean flags only as SECONDARY filters when you need compound conditions (e.g., events that are both errors AND requests). Single enum filter is more optimizer-friendly than multiple boolean checks.
 - **User actions:** filter `characteristics.classifier == "user_action"`, then check `user_action.type` (`xhr`, `custom`, `load`), `interaction.name`, `ui_element.detected_name`
 - **Custom actions** (from `dtrum.enterAction()`): `characteristics.classifier == "user_action"` AND `user_action.type == "custom"`
 - To find JS errors: `characteristics.classifier == "error"` then further filter by `error.type` and `error.source`

@@ -77,14 +77,19 @@
 
 ### ⛔ Application Entity Filter Cheat Sheet
 
-| Table | ✅ Correct Filter | ❌ WRONG (returns 0) |
-|-------|-------------------|---------------------|
-| `user.sessions` | `frontend.name == "[APP_NAME]"` ⚠️ frontend.name is an ARRAY — `==` may return 0; prefer `in()` filter | `dt.entity.application == "APPLICATION-XXXXXXXXXXXX"` |
-| `user.sessions` | `in(dt.rum.application.entities, "APPLICATION-XXXXXXXXXXXX")` | `dt.smartscape.frontend == toSmartscapeId(...)` |
-| `user.events` | `dt.rum.application.entity == "APPLICATION-XXXXXXXXXXXX"` | `dt.entity.application == "APPLICATION-XXXXXXXXXXXX"` |
-| `user.events` | `frontend.name == "[APP_NAME]"` | |
+| Table | ✅ PRIMARY (canonical, entity ID-based) | ✅ ALTERNATIVE (human-readable name) | ❌ WRONG (returns 0) |
+|-------|----------------------------------------|-------------------------------------|---------------------|
+| `user.sessions` | `in(dt.rum.application.entities, "APPLICATION-XXXXXXXXXXXX")` | `frontend.name == "[APP_NAME]"` ⚠️ frontend.name is an ARRAY — `==` may return 0; prefer `in()` filter | `dt.entity.application == "APPLICATION-XXXXXXXXXXXX"` |
+| `user.events` | `dt.rum.application.entity == "APPLICATION-XXXXXXXXXXXX"` | `frontend.name == "[APP_NAME]"` | `dt.entity.application == "APPLICATION-XXXXXXXXXXXX"` |
 
-**Key insight:** `dt.entity.application` is ALWAYS NULL on both `user.sessions` and `user.events`. The correct fields are `dt.rum.application.entity` (user.events) and `dt.rum.application.entities` (user.sessions).
+**Filtering best practices:**
+- **PRIMARY (recommended):** Use `dt.rum.application.entity` (user.events) or `dt.rum.application.entities` (user.sessions) for entity ID-based filtering — most precise, unambiguous, survives app renames
+- **ALTERNATIVE:** Use `frontend.name == "[APP_NAME]"` when you want human-readable queries or need to filter by display name in dashboards
+- **WRONG:** `dt.entity.application` is ALWAYS NULL on both `user.sessions` and `user.events` — DO NOT USE
+
+**When to use which:**
+- **Use entity ID filter** (`dt.rum.application.entity`) when: writing automation scripts, building reusable queries, working with multiple environments where app names may differ
+- **Use name filter** (`frontend.name`) when: building ad-hoc exploration queries, creating dashboard variables where users select by name, debugging when you don't have the entity ID yet
 
 ### Key RUM Queries (Gen3 Grail)
 

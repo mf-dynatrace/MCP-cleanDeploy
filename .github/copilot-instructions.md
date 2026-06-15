@@ -252,11 +252,12 @@ When using Dynatrace MCP tools, you MUST follow these rules to minimize Grail bu
 **❌ INVALID (DQL syntax error):** `user_action`, `user.actions`, `events` (for RUM), `user_session`
 
 **Application entity filters — USE THE CORRECT FIELD:**
-| Table | ✅ Correct Filter | ❌ WRONG (returns 0) |
-|-------|-------------------|---------------------|
-| `user.sessions` | `frontend.name == "App Name"` | `dt.entity.application == "APPLICATION-xxx"` |
-| `user.sessions` | `in(dt.rum.application.entities, "APPLICATION-xxx")` | |
-| `user.events` | `dt.rum.application.entity == "APPLICATION-xxx"` | `dt.entity.application == "APPLICATION-xxx"` |
+| Table | ✅ PRIMARY (canonical, entity ID) | ✅ ALTERNATIVE (human-readable name) | ❌ WRONG (returns 0) |
+|-------|-----------------------------------|-------------------------------------|---------------------|
+| `user.sessions` | `in(dt.rum.application.entities, "APPLICATION-xxx")` | `frontend.name == "App Name"` | `dt.entity.application == "APPLICATION-xxx"` |
+| `user.events` | `dt.rum.application.entity == "APPLICATION-xxx"` | `frontend.name == "App Name"` | `dt.entity.application == "APPLICATION-xxx"` |
+
+**Filtering guidance:** Prefer entity ID filters for production queries/automation; use name filters for ad-hoc exploration.
 
 **user.events field gotchas:**
 - NO `action.name` field — use `name` (often null for auto-detected actions)
@@ -286,8 +287,8 @@ When using Dynatrace MCP tools, you MUST follow these rules to minimize Grail bu
 ✅ DO: Only use Gen 3 Grail DQL queries (if MCP_GRAIL_ONLY=yes)
 ✅ DO: Use user.sessions (not user.events) for session-level counts (<0.3 GB)
 ✅ DO: Pre-filter user.events by characteristics.classifier BEFORE any other filter
-✅ DO: Use dt.rum.application.entity (NOT dt.entity.application) on user.events
-✅ DO: Use frontend.name or in(dt.rum.application.entities,...) on user.sessions
+✅ DO: Use dt.rum.application.entity (PRIMARY, canonical) or frontend.name (ALTERNATIVE) on user.events
+✅ DO: Use in(dt.rum.application.entities,...) (PRIMARY) or frontend.name (ALTERNATIVE) on user.sessions
 ✅ DO: Check reference/Entities_Reference.md for correct RUM filter patterns
 
 ❌ DON'T: Skip reading .env feature flags

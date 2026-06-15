@@ -42,6 +42,8 @@ Monitor web and mobile frontends using Real User Monitoring (RUM) with DQL queri
 
 ## Event Characteristics
 
+**⚠️ FILTERING BEST PRACTICE:** Use `characteristics.classifier == "value"` as your PRIMARY filter for cost optimization (single enum check is most efficient). Use the `characteristics.has_*` boolean flags below only as SECONDARY filters when you need compound conditions (e.g., events that are both errors AND have requests). See DATA_REFERENCE_INDEX.md for full guidance.
+
 | Characteristic | Meaning |
 |---------------|---------|
 | `characteristics.has_page_summary` | Page views (web) |

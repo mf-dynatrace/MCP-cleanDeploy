@@ -190,15 +190,15 @@ fetch bizevents, from:now()-24h
 
 ## 📝 Update Log
 
-### 2026-03-10 - Ecommerce Funnel Discovery (SC2)
+### 2026-03-10 - Ecommerce Funnel Discovery
 - **Source:** user.events page_summary + request queries for APPLICATION-XXXXXXXXXXXX
 - **Finding:** Mapped full booking funnel. `/your/bookings/` is a React SPA — all hotel booking wizard steps happen within one URL. SPA steps identified via API call patterns.
 - **Page-Level Funnel (7d):** Homepage (26K sessions) → Places to Stay (13K) → Bookings SPA (6.2K) → Confirmation (539)
 - **SPA Steps (7d):** api/packages/definitions (11.5K) → api/seasons/getAll (11.1K) → api/hotel/list (10.4K) → api/hotel/details (6.7K) → api/masterdata/getAttractionsAvailabilityInfo (9.7K)
 - **Key Domains:** www.[CLIENT_WEBSITE] (60K pages/24h), tickets.[CLIENT_WEBSITE] ([TICKET_PROVIDER] tickets), bookings.example.com
-- **Dashboard:** example/SC2_Ecommerce_Journey_Funnel_Dashboard.json
+- **Dashboard:** example/Ecommerce_Journey_Funnel_Dashboard.json
 
-### 2026-03-10 - [TICKET_PROVIDER] Iframe Ticket Checkout Journey Discovery (SC2b)
+### 2026-03-10 - [TICKET_PROVIDER] Iframe Ticket Checkout Journey Discovery
 - **Source:** user.events request classifier for APPLICATION-XXXXXXXXXXXX, domain `tickets.[CLIENT_WEBSITE]`
 - **Finding:** Mapped complete [TICKET_PROVIDER] iframe checkout SPA funnel. Iframe embeds on tickets page, SPA navigation tracked via `view.url.path` changes on XHR requests within the iframe.
 - **[TICKET_PROVIDER] SPA Funnel (7d):** Select Date (~5K) → Select Ticket (~930) → Add Extras (~950) → Basket (~720) → Checkout (~680) → Purchase (~420)
@@ -223,7 +223,6 @@ fetch bizevents, from:now()-24h
 - **Other Wizard Types:** FastTrack (`/fastlanewizard/`, 918 sessions), Recommended (`/recommenderWizard/`, 519 sessions), Calendar Pricing (`/calendarPricingWithImage/`)
 - **Parent Site Entry Pages:** Homepage `/your-location/` (36.7K req sessions) → Tickets Page `/your-location/tickets-passes/tickets/` (34.1K req sessions)
 - **BizEvents Status:** [TICKET_PROVIDER] GTM tracking tag NOT yet deployed — no `com.[ticket_provider].*` BizEvents available yet
-- **Dashboard:** example/SC2b_[TICKET_PROVIDER]_Ticket_Checkout_Funnel_Dashboard.json
 
 ### [DATE] - Initial Setup
 - **Source:** Workspace initialization

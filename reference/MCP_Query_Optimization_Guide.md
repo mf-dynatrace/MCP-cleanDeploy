@@ -415,7 +415,7 @@ fetch user.events, from:now()-24h
 
 ## 📊 Dashboard Tile Generation Rules (Gen 3, Version 20)
 
-> **Discovered:** 2026-03-10 during SC2 Ecommerce Funnel dashboard build  
+> **Discovered:** 2026-03-10 during Ecommerce Funnel dashboard build  
 > **Critical:** Follow these rules when generating dashboard JSON to avoid visualization errors
 
 ### Line Charts — Time-Series Data

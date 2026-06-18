@@ -1,3 +1,17 @@
+# ⚠️ This repository has been archived
+
+> **This project has moved to a new home.**
+>
+> ## 👉 [github.com/mf-dynatrace/dt-mcp-workspace](https://github.com/mf-dynatrace/dt-mcp-workspace)
+>
+> Please use the new repository for the latest version, updates, and issues.
+> This repo is kept for reference only and will no longer receive updates.
+
+---
+
+<details>
+<summary>Original README (archived)</summary>
+
 # Dynatrace MCP Connection - Clean Deploy Template
 
 > **Version:** 2.2  
@@ -342,3 +356,5 @@ Modify `AI_Prompt.md` to include:
 - [Dynatrace DQL Documentation](https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language)
 - [Dynatrace Gen 3 Dashboards](https://docs.dynatrace.com/docs/observe-and-explore/dashboards-new)
 - [Dynatrace BizEvents](https://docs.dynatrace.com/docs/platform/grail/data-model/business-events)
+
+</details>
